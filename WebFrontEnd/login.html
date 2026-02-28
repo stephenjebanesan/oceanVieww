@@ -79,26 +79,52 @@
         <div id="error-msg">Invalid username or password.</div>
     </div>
 
-    <script>
-        function handleLogin() {
+<script>
+        const API_BASE = 'http://localhost:8081/api';
+
+        async function handleLogin() {
             const user = document.getElementById('username').value;
             const pass = document.getElementById('password').value;
             const errorMsg = document.getElementById('error-msg');
+            const btn = document.querySelector('button');
 
-            // Default credentials (admin / admin123). Change these or link to an API endpoint later.
-            if (user === 'admin' && pass === 'admin123') {
-                sessionStorage.setItem('oceanViewAdminAuth', 'true');
-                window.location.href = 'admin.html';
-            } else {
+            // Basic frontend validation
+            if (!user || !pass) {
+                errorMsg.innerText = "Please enter both username and password.";
                 errorMsg.style.display = 'block';
+                return;
+            }
+
+            try {
+                btn.innerText = "Authenticating...";
+                btn.disabled = true;
+
+                const response = await fetch(`${API_BASE}/users/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: user, password: pass })
+                });
+
+                if (response.ok) {
+                    // Success! Store the session and redirect
+                    sessionStorage.setItem('oceanViewAdminAuth', 'true');
+                    window.location.href = 'admin.html';
+                } else {
+                    // 401 Unauthorized
+                    errorMsg.innerText = "Invalid username or password.";
+                    errorMsg.style.display = 'block';
+                }
+            } catch (error) {
+                errorMsg.innerText = "Server connection failed.";
+                errorMsg.style.display = 'block';
+            } finally {
+                btn.innerText = "Login";
+                btn.disabled = false;
             }
         }
 
-        // Allow pressing Enter to submit
         document.addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-                handleLogin();
-            }
+            if (e.key === 'Enter') handleLogin();
         });
     </script>
 </body>

@@ -34,7 +34,7 @@ public class ReservationController {
     @PostMapping("/book")
     public ResponseEntity<String> bookRoom(@RequestBody ReservationRequest request) {
         Optional<Room> roomOpt = roomRepository.findById(request.getRoomNumber());
-        if (roomOpt.isEmpty() || !roomOpt.get().isAvailable()) {
+        if (roomOpt.isEmpty()) {
             return ResponseEntity.badRequest().body("Room not available.");
         }
 
