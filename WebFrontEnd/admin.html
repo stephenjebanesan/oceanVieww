@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hotel Side - Ocean View Admin</title>
+    <script>
+        if (sessionStorage.getItem('oceanViewAdminAuth') !== 'true') {
+            window.location.replace('login.html');
+        }
+    </script>
     <style>
         body { 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -18,6 +23,31 @@
             color: white;
         }
 
+        .header-bar {
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+
+        .logout-btn {
+            background: rgba(231, 76, 60, 0.2);
+            color: #ffcccb;
+            border: 1px solid rgba(231, 76, 60, 0.4);
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .logout-btn:hover {
+            background: rgba(231, 76, 60, 0.6);
+            color: white;
+        }
+
         .glass { 
             width: 100%; 
             max-width: 900px; 
@@ -29,7 +59,7 @@
             border: 1px solid rgba(255, 255, 255, 0.2); 
             box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3); 
             margin-bottom: 30px;
-            position: relative; /* Ensures it stays in its own layer */
+            position: relative; 
             z-index: 1;
         }
 
@@ -44,12 +74,11 @@
             border-radius: 12px; color: white; box-sizing: border-box; outline: none; font-size: 15px;
         }
 
-        button { 
+        button.primary-btn { 
             background-color: white; color: #764ba2; padding: 15px; border: none; border-radius: 12px; 
             cursor: pointer; font-size: 15px; font-weight: bold; width: 100%; margin-top: 10px;
         }
 
-        /* TABLE FIX: High z-index and pointer-events ensure clicks pass through the glass blur */
         table { 
             width: 100%; 
             border-collapse: collapse; 
@@ -80,8 +109,8 @@
             font-size: 11px; 
             font-weight: 700;
             position: relative;
-            z-index: 20; /* Keep it above everything else */
-            pointer-events: auto !important; /* Force it to accept clicks */
+            z-index: 20; 
+            pointer-events: auto !important; 
         }
         .delete-btn:hover { background: #e74c3c; color: white; }
 
@@ -95,6 +124,10 @@
 </head>
 <body>
 
+    <div class="header-bar">
+        <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+
     <div class="glass">
         <h1>Hotel Inventory Control</h1>
         <div class="grid">
@@ -107,11 +140,11 @@
                     <label>Daily Rate ($)</label>
                     <input type="text" id="rate" placeholder="e.g. 150">
                 </div>
-                <button onclick="add()">Update Inventory</button>
+                <button class="primary-btn" onclick="add()">Update Inventory</button>
             </section>
             <section style="display: flex; flex-direction: column; justify-content: center; border-left: 1px solid rgba(255,255,255,0.2); padding-left: 40px;">
                 <p style="opacity: 0.9; line-height: 1.6; font-size: 14px;">Manage resort data in real-time. Changes sync instantly with the receptionist portal.</p>
-                <button style="background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.3);" onclick="fetchBookings()">Refresh List</button>
+                <button class="primary-btn" style="background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.3);" onclick="fetchBookings()">Refresh List</button>
             </section>
         </div>
     </div>
@@ -137,11 +170,16 @@
     <div id="success-modal">
         <h2 id="modal-title" style="color: #28a745;">Success!</h2>
         <p id="modal-msg"></p>
-        <button onclick="closeModal()" style="background:#1d1d1f; color:white; width:auto; padding:10px 20px; border-radius:10px;">Dismiss</button>
+        <button onclick="closeModal()" style="background:#1d1d1f; color:white; width:auto; padding:10px 20px; border-radius:10px; border:none; cursor:pointer;">Dismiss</button>
     </div>
 
     <script>
         const API_BASE = 'http://localhost:8081/api';
+
+        function logout() {
+            sessionStorage.removeItem('oceanViewAdminAuth');
+            window.location.replace('login.html');
+        }
 
         async function add() {
             const numInput = document.getElementById('num');
@@ -164,14 +202,9 @@
                 });
 
                 if(res.ok) {
-                    // SUCCESS: Show the modal and refresh the list
                     showModal("Inventory Updated", `Room ${data.roomNumber} has been added successfully.`);
-                    
-                    // Clear the inputs for the next entry
                     numInput.value = '';
                     rateInput.value = '';
-                    
-                    // Reload the table so you see the new room immediately
                     fetchBookings(); 
                 } else {
                     const errorText = await res.text();
@@ -204,7 +237,6 @@
             } catch (e) { body.innerHTML = '<tr><td colspan="7">Error loading data.</td></tr>'; }
         }
         window.removeBooking = async function(id) {
-            // STEP 1: Check if this appears in your F12 Console
             console.log("Attempting to delete ID:", id); 
             
             if(!confirm("Cancel reservation #" + id + "?")) return;
@@ -221,7 +253,6 @@
                 if(res.ok) {
                     const msg = await res.text();
                     showModal("Removed", "Booking has been deleted and the room is free.");
-                    // STEP 2: Force a full refresh of the data
                     await fetchBookings(); 
                 } else {
                     const errorMsg = await res.text();
