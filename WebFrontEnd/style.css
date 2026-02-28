@@ -1,0 +1,182 @@
+/* Apple-style Glassmorphism Theme */
+body { 
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+    margin: 0; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    min-height: 100vh; 
+    padding: 40px; 
+    box-sizing: border-box;
+    color: white;
+}
+
+.glass { 
+    width: 100%; 
+    max-width: 900px; 
+    background: rgba(255, 255, 255, 0.15); 
+    backdrop-filter: blur(20px); 
+    -webkit-backdrop-filter: blur(20px);
+    padding: 35px; 
+    border-radius: 24px; 
+    border: 1px solid rgba(255, 255, 255, 0.2); 
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3); 
+    margin-bottom: 20px;
+    display: none; 
+    animation: fadeIn 0.4s ease;
+}
+
+.header-glass {
+    width: 100%; 
+    max-width: 900px; 
+    background: rgba(0, 0, 0, 0.2); 
+    backdrop-filter: blur(10px);
+    padding: 20px 35px; 
+    border-radius: 20px;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.header-glass h1 { margin: 0; font-size: 24px; font-weight: 700; }
+
+.menu-buttons { display: flex; gap: 15px; }
+
+.nav-btn {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    padding: 10px 20px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+}
+.nav-btn:hover, .nav-btn.active { background: white; color: #764ba2; }
+
+.logout-btn {
+    background: rgba(231, 76, 60, 0.2); color: #ff4d4d; border: 1px solid rgba(231, 76, 60, 0.4);
+    padding: 10px 20px; border-radius: 12px; cursor: pointer; font-weight: 600; transition: 0.3s;
+}
+.logout-btn:hover { background: #e74c3c; color: white; }
+
+#roomGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.room-card {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(45, 10, 80, 0.8);
+    padding: 15px;
+    border-radius: 16px;
+    text-align: center;
+    transition: transform 0.2s, background 0.2s;
+}
+.room-card:hover { transform: scale(1.05); }
+.room-card h3 { margin: 0 0 10px 0; font-size: 20px; color: white; }
+
+.info-box {
+    background: white;
+    border-radius: 12px;
+    padding: 12px 8px;
+    margin: 12px 0;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.status-vacant { color: #2ecc71; font-weight: 800; font-size: 13px; letter-spacing: 1px; display: block; }
+.status-booked { color: #ff4d4d; font-weight: 800; font-size: 13px; letter-spacing: 1px; display: block; }
+.guest-name { color: #444; font-size: 13px; font-weight: 600; margin-top: 5px; display: block; min-height: 15px; text-transform: capitalize; }
+
+.delete-btn { 
+    background: white; 
+    color: #ff4d4d; 
+    border: none; 
+    padding: 10px 12px; 
+    border-radius: 10px; 
+    cursor: pointer; 
+    font-size: 12px; 
+    font-weight: bold; 
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+.delete-btn:hover { background: #ff4d4d; color: white; transform: translateY(-2px); }
+
+h2 { font-size: 22px; margin-top: 0; margin-bottom: 20px; }
+.form-group { margin-bottom: 18px; }
+label { display: block; font-size: 11px; margin-bottom: 6px; opacity: 0.8; font-weight: 600; text-transform: uppercase; }
+input, select { 
+    width: 100%; padding: 14px; border: none; background: rgba(255, 255, 255, 0.2); 
+    border-radius: 12px; color: white; box-sizing: border-box; outline: none; font-size: 15px;
+}
+input option { color: black; }
+button.action-btn { 
+    background-color: white; color: #764ba2; padding: 15px; border: none; border-radius: 12px; 
+    cursor: pointer; font-size: 15px; font-weight: bold; width: 100%; margin-top: 10px; transition: 0.2s;
+}
+button.action-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+
+table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+th { text-align: left; padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.2); font-size: 12px; opacity: 0.7; }
+td { padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 14px; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+@media print {
+    /* 1. Kill the flexbox layout so the page can scroll normally */
+    body { 
+        display: block !important; 
+        min-height: auto !important; 
+        background: white !important; 
+        padding: 0 !important; 
+        margin: 0 !important; 
+    }
+
+    /* 2. Hide the navigation header and all other panels */
+    .header-glass, 
+    #panel-add-room, 
+    #panel-check-rooms, 
+    #panel-add-guest { 
+        display: none !important; 
+    }
+
+    /* 3. Strip the glass effect from the export panel */
+    #panel-export { 
+        display: block !important; 
+        box-shadow: none !important; 
+        border: none !important; 
+        background: none !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        max-width: 100% !important;
+    }
+
+    /* 4. Hide the "Export Data" text and the Print Button */
+    #panel-export > h2, 
+    #panel-export > p, 
+    #panel-export > button { 
+        display: none !important; 
+    }
+
+    /* 5. UNLOCK THE HEIGHT! Remove scrollbars so the table drops down */
+    #print-section { 
+        position: relative !important; 
+        max-height: none !important; 
+        overflow: visible !important; 
+        padding: 0 !important;
+        background: white !important;
+    }
+
+    /* 6. Formatting to ensure table rows don't get cut in half across pages */
+    table { page-break-inside: auto; width: 100%; border-collapse: collapse; }
+    tr { page-break-inside: avoid; page-break-after: auto; }
+    thead { display: table-header-group; }
+    th, td { border: 1px solid #000 !important; padding: 10px !important; color: black !important; }
+    th { background-color: #f2f2f2 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}

@@ -5,125 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Ocean View</title>
     <script>
-        // SECURITY GATEWAY: Kick out unauthorized users immediately
         if (sessionStorage.getItem('oceanViewAdminAuth') !== 'true') {
-            window.location.href = 'login.html'; // Assuming your login page is login.html
+            window.location.href = 'login.html'; 
         }
     </script>
-    <style>
-        /* Apple-style Glassmorphism Theme */
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-            margin: 0; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            min-height: 100vh; 
-            padding: 40px; 
-            box-sizing: border-box;
-            color: white;
-        }
+    <link rel="stylesheet" href="style.css" type="text/css"/>
 
-        /* Glass Panel Base */
-        .glass { 
-            width: 100%; 
-            max-width: 900px; 
-            background: rgba(255, 255, 255, 0.15); 
-            backdrop-filter: blur(20px); 
-            -webkit-backdrop-filter: blur(20px);
-            padding: 35px; 
-            border-radius: 24px; 
-            border: 1px solid rgba(255, 255, 255, 0.2); 
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3); 
-            margin-bottom: 20px;
-            display: none; /* Hidden by default, toggled via JS */
-            animation: fadeIn 0.4s ease;
-        }
-
-        /* Dashboard Header & Menu */
-        .header-glass {
-            width: 100%; 
-            max-width: 900px; 
-            background: rgba(0, 0, 0, 0.2); 
-            backdrop-filter: blur(10px);
-            padding: 20px 35px; 
-            border-radius: 20px;
-            margin-bottom: 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-/* Room Grid Styling */
-        #roomGrid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .room-card {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 15px;
-            border-radius: 16px;
-            text-align: center;
-            transition: transform 0.2s, background 0.2s;
-        }
-
-        .room-card:hover { transform: scale(1.05); }
-
-        .room-card h3 { margin: 0 0 10px 0; font-size: 20px; color: white; }
-        .status-vacant { color: #2ecc71; font-weight: 800; font-size: 12px; letter-spacing: 1px; }
-        .status-booked { color: #ff4d4d; font-weight: 800; font-size: 12px; letter-spacing: 1px; }
-        .guest-name { font-size: 12px; opacity: 0.9; margin-top: 8px; display: block; min-height: 15px; }
-        .header-glass h1 { margin: 0; font-size: 24px; font-weight: 700; }
-
-        .menu-buttons { display: flex; gap: 15px; }
-
-        .nav-btn {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            padding: 10px 20px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: 0.3s;
-        }
-        .nav-btn:hover, .nav-btn.active { background: white; color: #764ba2; }
-
-        .logout-btn {
-            background: rgba(231, 76, 60, 0.2); color: #ff4d4d; border: 1px solid rgba(231, 76, 60, 0.4);
-            padding: 10px 20px; border-radius: 12px; cursor: pointer; font-weight: 600; transition: 0.3s;
-        }
-        .logout-btn:hover { background: #e74c3c; color: white; }
-
-        /* Form & Table Elements */
-        h2 { font-size: 22px; margin-top: 0; margin-bottom: 20px; }
-        .form-group { margin-bottom: 18px; }
-        label { display: block; font-size: 11px; margin-bottom: 6px; opacity: 0.8; font-weight: 600; text-transform: uppercase; }
-        input, select { 
-            width: 100%; padding: 14px; border: none; background: rgba(255, 255, 255, 0.2); 
-            border-radius: 12px; color: white; box-sizing: border-box; outline: none; font-size: 15px;
-        }
-        input option { color: black; }
-        button.action-btn { 
-            background-color: white; color: #764ba2; padding: 15px; border: none; border-radius: 12px; 
-            cursor: pointer; font-size: 15px; font-weight: bold; width: 100%; margin-top: 10px; transition: 0.2s;
-        }
-        button.action-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
-
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th { text-align: left; padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.2); font-size: 12px; opacity: 0.7; }
-        td { padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 14px; }
-        
-        .delete-btn { background: rgba(231, 76, 60, 0.3); color: #ff4d4d; border: 1px solid rgba(231, 76, 60, 0.5); padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 11px; font-weight: bold; }
-        .delete-btn:hover { background: #e74c3c; color: white; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    </style>
 </head>
 <body>
 
@@ -133,6 +20,7 @@
             <button class="nav-btn active" onclick="showPanel('panel-add-room', this)">Add Rooms</button>
             <button class="nav-btn" onclick="showPanel('panel-check-rooms', this); renderRoomGrid();">Check Rooms</button>            
             <button class="nav-btn" onclick="showPanel('panel-add-guest', this); loadAvailableRooms();">Add Guest</button>
+            <button class="nav-btn" onclick="showPanel('panel-export', this); loadPrintTable();">Export</button>
         </div>
         <button class="logout-btn" onclick="logout()">Logout</button>
     </div>
@@ -152,13 +40,11 @@
 
     <div id="panel-check-rooms" class="glass" style="max-width: 950px;">
         <h2>Daily Room Status Monitor</h2>
-        
         <div style="display: flex; gap: 15px; align-items: center; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 15px;">
             <label style="margin: 0; font-size: 14px;">View Status For:</label>
             <input type="date" id="statusDate" style="width: auto; padding: 10px;" onchange="renderRoomGrid()">
             <button class="nav-btn" style="margin: 0;" onclick="renderRoomGrid()">Refresh Grid</button>
         </div>
-
         <div id="roomGrid"></div>
     </div>
 
@@ -195,95 +81,149 @@
         <button class="action-btn" onclick="addGuest()">Confirm Reservation</button>
     </div>
 
+    <div id="panel-export" class="glass" style="max-width: 950px;">
+        <h2>Export Data</h2>
+        <p style="margin-top: -10px; margin-bottom: 20px; font-size: 14px; opacity: 0.8;">Generate a printable report of all active and past reservations.</p>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px;">
+            <button class="action-btn" style="margin-top: 0; background: #000000; color: white;" onclick="window.print()">🖨️ Print Report</button>
+            <button class="action-btn" style="margin-top: 0; background: #27ae60; color: white;" onclick="exportTableToCSV('OceanView_Reservations.csv')">📊 Export to Excel</button>
+        </div>        
+        <div id="print-section" style="background: rgba(255,255,255,0.9); padding: 20px; border-radius: 12px; color: black; max-height: 400px; overflow-y: auto;">
+            <h2 style="color: black; text-align: center; margin-top: 0;">Ocean View Resort - Reservations Report</h2>
+            <table style="width: 100%; border-collapse: collapse; color: black; font-size: 13px;">
+                <thead>
+                    <tr>
+                        <th style="color: black; border-bottom: 2px solid #333;">ID</th>
+                        <th style="color: black; border-bottom: 2px solid #333;">Guest Name</th>
+                        <th style="color: black; border-bottom: 2px solid #333;">Contact Info</th>
+                        <th style="color: black; border-bottom: 2px solid #333;">Room No.</th>
+                        <th style="color: black; border-bottom: 2px solid #333;">Check-In</th>
+                        <th style="color: black; border-bottom: 2px solid #333;">Check-Out</th>
+                    </tr>
+                </thead>
+                <tbody id="printTableBody">
+                    </tbody>
+            </table>
+        </div>
+    </div>
+
     <script>
         const API_BASE = 'http://localhost:8081/api';
 
-        // --- UI NAVIGATION LOGIC ---
         function showPanel(panelId, btnElement) {
-            // Hide all panels
             document.getElementById('panel-add-room').style.display = 'none';
             document.getElementById('panel-check-rooms').style.display = 'none';
             document.getElementById('panel-add-guest').style.display = 'none';
+            document.getElementById('panel-export').style.display = 'none'; // ADDED
             
-            // Remove 'active' class from all buttons
             document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
             
-            // Show selected panel & highlight button
             document.getElementById(panelId).style.display = 'block';
             if(btnElement) btnElement.classList.add('active');
         }
-// Set the date picker to Today (Sri Lanka Local Time) on load
+
         window.addEventListener('DOMContentLoaded', (event) => {
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('statusDate').value = today;
-            document.getElementById('gCheckIn').value = today; // Also helpful for the Add Guest tab
+            document.getElementById('gCheckIn').value = today; 
         });
 
-        // Date-Based Logic to render 30 rooms (1001 to 1030)
+        // --- NEW: FETCH AND BUILD THE PRINTABLE TABLE ---
+        async function loadPrintTable() {
+            const tbody = document.getElementById('printTableBody');
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Loading database records...</td></tr>';
+            try {
+                const res = await fetch(`${API_BASE}/reservations/all`);
+                const reservations = await res.json();
+                
+                tbody.innerHTML = '';
+                
+                if (reservations.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No reservations found in the database.</td></tr>';
+                    return;
+                }
+
+                reservations.forEach(b => {
+                    const guestName = b.guest ? b.guest.guestName : 'Unknown';
+                    const contact = b.guest ? b.guest.contactNumber : 'N/A';
+                    const roomNum = b.room ? b.room.roomNumber : 'N/A';
+
+                    tbody.insertAdjacentHTML('beforeend', `
+                        <tr>
+                            <td style="border-bottom: 1px solid #ccc;">#${b.reservationNumber}</td>
+                            <td style="border-bottom: 1px solid #ccc; font-weight: bold;">${guestName}</td>
+                            <td style="border-bottom: 1px solid #ccc;">${contact}</td>
+                            <td style="border-bottom: 1px solid #ccc;">${roomNum}</td>
+                            <td style="border-bottom: 1px solid #ccc;">${b.checkInDate}</td>
+                            <td style="border-bottom: 1px solid #ccc;">${b.checkOutDate}</td>
+                        </tr>
+                    `);
+                });
+            } catch (e) { 
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:red;">Failed to connect to Spring Boot API.</td></tr>'; 
+            }
+        }
+
+        // --- PREVIOUS GRID & FORM LOGIC REMAINS UNCHANGED ---
         async function renderRoomGrid() {
             const grid = document.getElementById('roomGrid');
             const selectedDate = document.getElementById('statusDate').value;
             grid.innerHTML = '<p style="text-align:center; grid-column: 1 / -1;">Calculating availability...</p>';
 
             try {
-                // Fetch all reservations to compute date collisions
                 const res = await fetch(`${API_BASE}/reservations/all`);
                 const reservations = await res.json();
-                
                 grid.innerHTML = '';
                 
-                // Generate exactly 30 rooms (1001 through 1030)
                 for(let roomNum = 1001; roomNum <= 1030; roomNum++) {
-                    
-                    // Hotel Logic: A room is booked if the selected date falls between Check-In and Check-Out
                     const booking = reservations.find(b => 
-                        // Only check reservations that have an actual room object attached
                         b.room && b.room.roomNumber == roomNum && 
                         selectedDate >= b.checkInDate && 
-                        selectedDate < b.checkOutDate // < because on checkout day, it is free for the next person
+                        selectedDate < b.checkOutDate 
                     );
 
                     if (booking) {
-                        // Room is Occupied on this date
                         grid.insertAdjacentHTML('beforeend', `
-                            <div class="room-card" style="border-color: rgba(231, 76, 60, 0.4); background: rgba(231, 76, 60, 0.15);">
+                            <div class="room-card" style="border-color: rgba(192, 57, 43, 0.9); background: rgba(192, 57, 43, 0.15);">
                                 <h3>${roomNum}</h3>
-                                <span class="status-booked">BOOKED</span>
-                                <span class="guest-name">${booking.guest.guestName}</span>
-                                <button class="delete-btn" style="margin-top: 10px; width: 100%;" onclick="removeBooking(${booking.reservationNumber})">Force Checkout</button>
+                                <div class="info-box">
+                                    <span class="status-booked">BOOKED</span>
+                                    <span class="guest-name">${booking.guest.guestName}</span>
+                                </div>
+                                <button class="delete-btn" style="width: 100%;" onclick="removeBooking(${booking.reservationNumber})">Force Checkout</button>
                             </div>
                         `);
                     } else {
-                        // Room is Free on this date
                         grid.insertAdjacentHTML('beforeend', `
-                            <div class="room-card" style="border-color: rgba(46, 204, 113, 0.3);">
+                            <div class="room-card" style="border-color: rgba(39, 174, 96, 0.8); background: rgb(30 13 53 / 25%);">
                                 <h3>${roomNum}</h3>
-                                <span class="status-vacant">VACANT</span>
-                                <span class="guest-name">-</span>
+                                <div class="info-box">
+                                    <span class="status-vacant">VACANT</span>
+                                    <span class="guest-name" style="opacity: 0.4;">---</span>
+                                </div>
                             </div>
                         `);
                     }
                 }
             } catch (e) {
                 grid.innerHTML = '<p style="color:#ff4d4d; grid-column: 1 / -1;">Error connecting to Spring Boot.</p>';
-                console.error(e);
             }
         }
 
-        // Keep your existing removeBooking function, just make sure it calls renderRoomGrid() at the end
         async function removeBooking(id) {
             if(!confirm("Checkout guest early and free up this room?")) return;
             try {
                 const res = await fetch(`${API_BASE}/reservations/${id}`, { method: 'DELETE' });
-                if(res.ok) { renderRoomGrid(); } // Refresh the grid!
+                if(res.ok) { renderRoomGrid(); } 
             } catch (e) { alert("Checkout failed."); }
         }
+
         function logout() {
             sessionStorage.removeItem('oceanViewAdminAuth');
             window.location.href = 'login.html';
         }
 
-        // --- PANEL 1: ADD ROOMS LOGIC ---
         async function addRoom() {
             const data = {
                 roomNumber: document.getElementById('num').value,
@@ -304,68 +244,28 @@
             } catch (e) { alert("Server error."); }
         }
 
-        // --- PANEL 2: CHECK ROOMS LOGIC ---
-        async function fetchBookings() {
-            const body = document.getElementById('bookingsBody');
-            body.innerHTML = '<tr><td colspan="6">Loading...</td></tr>';
-            try {
-                const res = await fetch(`${API_BASE}/reservations/all`);
-                const bookings = await res.json();
-                body.innerHTML = '';
-                bookings.forEach(b => {
-                    const row = `<tr>
-                        <td>${b.reservationNumber}</td>
-                        <td>${b.guest.guestName}</td>
-                        <td>${b.room.roomNumber}</td>
-                        <td>${b.checkInDate}</td>
-                        <td>${b.checkOutDate}</td>
-                        <td><button class="delete-btn" onclick="removeBooking(${b.reservationNumber})">Checkout</button></td>
-                    </tr>`;
-                    body.insertAdjacentHTML('beforeend', row);
-                });
-            } catch (e) { body.innerHTML = '<tr><td colspan="6">Error loading data.</td></tr>'; }
-        }
-
-        async function removeBooking(id) {
-            if(!confirm("Checkout guest and free up this room?")) return;
-            try {
-                const res = await fetch(`${API_BASE}/reservations/${id}`, { method: 'DELETE' });
-                if(res.ok) { fetchBookings(); } // Refresh table immediately
-            } catch (e) { alert("Checkout failed."); }
-        }
-
-        // --- PANEL 3: ADD GUEST LOGIC ---
         async function loadAvailableRooms() {
             const roomSelect = document.getElementById('gRoom');
             const checkIn = document.getElementById('gCheckIn').value;
             const checkOut = document.getElementById('gCheckOut').value;
 
-            // Don't calculate if dates aren't picked yet
             if (!checkIn || !checkOut) {
                 roomSelect.innerHTML = '<option value="">-- Select Dates First --</option>';
                 return;
             }
-
             roomSelect.innerHTML = '<option value="">Calculating...</option>';
 
             try {
-                // Fetch all reservations to check for date overlaps
                 const res = await fetch(`${API_BASE}/reservations/all`);
                 const reservations = await res.json();
-                
                 roomSelect.innerHTML = '<option value="">-- Select Room --</option>'; 
 
-                // Loop through your 30 rooms
                 for (let roomNum = 1001; roomNum <= 1030; roomNum++) {
-                    
-                    // Check if this room has a reservation that OVERLAPS with our chosen dates
                     const isOccupied = reservations.some(b => {
                         return b.room && b.room.roomNumber == roomNum &&
-                               // Overlap logic: Check-in is before they leave AND Check-out is after they arrive
                                (checkIn < b.checkOutDate && checkOut > b.checkInDate);
                     });
 
-                    // If it is NOT occupied on these dates, add it to the dropdown!
                     if (!isOccupied) {
                         roomSelect.insertAdjacentHTML('beforeend', `<option value="${roomNum}">Room ${roomNum} ($150)</option>`);
                     }
@@ -373,6 +273,37 @@
             } catch (e) { 
                 roomSelect.innerHTML = '<option value="">Error loading rooms</option>'; 
             }
+        }
+// --- NEW: EXPORT TABLE TO EXCEL (CSV) ---
+        function exportTableToCSV(filename) {
+            const table = document.querySelector("#print-section table");
+            let csv = [];
+            
+            // Target all rows in the table (including headers)
+            const rows = table.querySelectorAll("tr");
+            
+            for (let i = 0; i < rows.length; i++) {
+                let row = [], cols = rows[i].querySelectorAll("td, th");
+                
+                for (let j = 0; j < cols.length; j++) {
+                    // Clean the text: remove line breaks and wrap in double quotes to prevent comma breaks
+                    let data = cols[j].innerText.replace(/(\r\n|\n|\r)/gm, "").replace(/"/g, '""');
+                    row.push('"' + data + '"');
+                }
+                csv.push(row.join(","));
+            }
+
+            // Create a Blob file and trigger the browser's download manager
+            const csvFile = new Blob([csv.join("\n")], { type: "text/csv" });
+            const downloadLink = document.createElement("a");
+            
+            downloadLink.download = filename;
+            downloadLink.href = window.URL.createObjectURL(csvFile);
+            downloadLink.style.display = "none";
+            
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
         }
         async function addGuest() {
             const data = {
@@ -391,11 +322,10 @@
                 });
                 if (res.ok) {
                     alert("Guest reservation created successfully!");
-                    // Clear form
                     document.getElementById('gName').value = '';
                     document.getElementById('gContact').value = '';
                     document.getElementById('gAddress').value = '';
-                    loadAvailableRooms(); // refresh dropdown so room disappears
+                    loadAvailableRooms(); 
                 } else { alert("Booking failed."); }
             } catch (e) { alert("Server error."); }
         }
