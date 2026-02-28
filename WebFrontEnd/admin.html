@@ -107,7 +107,16 @@
             </table>
         </div>
     </div>
-
+    <div id="room-modal-overlay">
+        <div id="room-modal-box">
+            <h3 id="rm-title"></h3>
+            <p><strong>Type:</strong> <span id="rm-type"></span></p>
+            <p><strong>Rate:</strong> $<span id="rm-rate"></span>/night</p>
+            <p><strong>AC Status:</strong> <span id="rm-ac"></span></p>
+            <p><strong>Suite Type:</strong> <span id="rm-suite"></span></p>
+            <button class="action-btn" onclick="closeRoomModal()" style="background:#000; color:#fff;">Close</button>
+        </div>
+    </div>
     <script>
         const API_BASE = 'http://localhost:8081/api';
 
@@ -186,7 +195,7 @@
                     if (booking) {
                         grid.insertAdjacentHTML('beforeend', `
                             <div class="room-card" style="border-color: rgba(192, 57, 43, 0.9); background: rgba(192, 57, 43, 0.15);">
-                                <h3>${roomNum}</h3>
+                                <h3 style="cursor: pointer; text-decoration: underline;" onclick="showRoomDetails('${roomNum}')" title="Click for details">${roomNum}</h3>
                                 <div class="info-box">
                                     <span class="status-booked">BOOKED</span>
                                     <span class="guest-name">${booking.guest.guestName}</span>
@@ -197,7 +206,7 @@
                     } else {
                         grid.insertAdjacentHTML('beforeend', `
                             <div class="room-card" style="border-color: rgba(39, 174, 96, 0.8); background: rgb(30 13 53 / 25%);">
-                                <h3>${roomNum}</h3>
+                                <h3 style="cursor: pointer; text-decoration: underline;" onclick="showRoomDetails('${roomNum}')" title="Click for details">${roomNum}</h3>
                                 <div class="info-box">
                                     <span class="status-vacant">VACANT</span>
                                     <span class="guest-name" style="opacity: 0.4;">---</span>
@@ -218,7 +227,29 @@
                 if(res.ok) { renderRoomGrid(); } 
             } catch (e) { alert("Checkout failed."); }
         }
+async function showRoomDetails(roomNum) {
+            try {
+                const res = await fetch(`${API_BASE}/rooms/${roomNum}`);
+                if(res.ok) {
+                    const room = await res.json();
+                    document.getElementById('rm-title').innerText = `Room ${room.roomNumber} Details`;
+                    document.getElementById('rm-type').innerText = room.roomType || 'N/A';
+                    document.getElementById('rm-rate').innerText = room.dailyRate || 'N/A';
+                    document.getElementById('rm-ac').innerText = room.acStatus || 'N/A';
+                    document.getElementById('rm-suite').innerText = room.suiteType || 'N/A';
+                    
+                    document.getElementById('room-modal-overlay').style.display = 'flex';
+                } else {
+                    alert("Room details not found in database.");
+                }
+            } catch (e) {
+                alert("Error fetching room details.");
+            }
+        }
 
+        function closeRoomModal() {
+            document.getElementById('room-modal-overlay').style.display = 'none';
+        }
         function logout() {
             sessionStorage.removeItem('oceanViewAdminAuth');
             window.location.href = 'login.html';

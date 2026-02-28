@@ -16,19 +16,24 @@ public class RoomController {
     @Autowired
     private RoomRepository roomRepository;
 
-    // Existing method: Get all available rooms
     @GetMapping("/available")
     public List<Room> getAvailableRooms() {
         return roomRepository.findByIsAvailableTrue();
     }
 
-    // NEW METHOD: Admin capability to add new rooms
+    // NEW METHOD: Fetch a single room's details by ID
+    @GetMapping("/{id}")
+    public ResponseEntity<Room> getRoomById(@PathVariable("id") String id) {
+        return roomRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @PostMapping("/add")
     public ResponseEntity<String> addRoom(@RequestBody Room room) {
         if (roomRepository.existsById(room.getRoomNumber())) {
             return ResponseEntity.badRequest().body("Error: Room number already exists.");
         }
-        // Force availability to true for new rooms
         room.setAvailable(true); 
         roomRepository.save(room);
         return ResponseEntity.ok("Room " + room.getRoomNumber() + " added successfully!");
