@@ -193,7 +193,7 @@
                 const reservations = await res.json();
                 grid.innerHTML = '';
                 
-                for(let roomNum = 1001; roomNum <= 1036; roomNum++) {
+                for(let roomNum = 1001; roomNum <= 1047; roomNum++) {
                     const booking = reservations.find(b => 
                         b.room && b.room.roomNumber == roomNum && 
                         selectedDate >= b.checkInDate && 

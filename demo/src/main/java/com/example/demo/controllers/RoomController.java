@@ -21,7 +21,7 @@ public class RoomController {
         return roomRepository.findByIsAvailableTrue();
     }
 
-    // NEW METHOD: Fetch a single room's details by ID
+    // Fetch a single room's details by ID for the modal
     @GetMapping("/{id}")
     public ResponseEntity<Room> getRoomById(@PathVariable("id") String id) {
         return roomRepository.findById(id)
@@ -37,5 +37,11 @@ public class RoomController {
         room.setAvailable(true); 
         roomRepository.save(room);
         return ResponseEntity.ok("Room " + room.getRoomNumber() + " added successfully!");
+    }
+
+    // Get strictly ALL rooms regardless of availability
+    @GetMapping("/all")
+    public List<Room> getAllRooms() {
+        return roomRepository.findAll();
     }
 }
