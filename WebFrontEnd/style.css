@@ -56,6 +56,20 @@ body {
 }
 .nav-btn:hover, .nav-btn.active { background: white; color: #764ba2; }
 
+.nav-btn-print{
+    background: rgb(76 23 199 / 85%);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    padding: 10px 20px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.nav-btn-print:hover, .nav-btn-print.active { background: rgb(0, 0, 0); color: #ffffff; }
+
+
 .logout-btn {
     background: rgba(231, 76, 60, 0.2); color: #ff4d4d; border: 1px solid rgba(231, 76, 60, 0.4);
     padding: 10px 20px; border-radius: 12px; cursor: pointer; font-weight: 600; transition: 0.3s;
