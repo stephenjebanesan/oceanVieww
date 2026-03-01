@@ -17,9 +17,10 @@
     <div class="header-glass">
         <h1>Ocean View Admin</h1>
         <div class="menu-buttons">
-            <button class="nav-btn active" onclick="showPanel('panel-add-room', this)">Add Rooms</button>
             <button class="nav-btn" onclick="showPanel('panel-check-rooms', this); renderRoomGrid();">Check Rooms</button>            
             <button class="nav-btn" onclick="showPanel('panel-add-guest', this); loadAvailableRooms();">Add Guest</button>
+            <button class="nav-btn active" onclick="showPanel('panel-add-room', this)">Add Rooms</button>
+
             <button class="nav-btn" onclick="showPanel('panel-export', this); loadPrintTable();">Export</button>
         </div>
         <button class="logout-btn" onclick="logout()">Logout</button>
@@ -118,13 +119,16 @@
             <button class="action-btn" onclick="closeRoomModal()" style="background:#000; color:#fff;">Close</button>
         </div>
     </div>
+
     <script>
+        
         const API_BASE = 'http://localhost:8081/api';
 
         function showPanel(panelId, btnElement) {
-            document.getElementById('panel-add-room').style.display = 'none';
             document.getElementById('panel-check-rooms').style.display = 'none';
             document.getElementById('panel-add-guest').style.display = 'none';
+            document.getElementById('panel-add-room').style.display = 'none';
+
             document.getElementById('panel-export').style.display = 'none';
             
             document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
@@ -293,22 +297,40 @@
             roomSelect.innerHTML = '<option value="">Calculating...</option>';
 
             try {
-                const res = await fetch(`${API_BASE}/reservations/all`);
-                const reservations = await res.json();
+                // Fetch both reservations AND available rooms from the database simultaneously
+                const [resReservations, resRooms] = await Promise.all([
+                    fetch(`${API_BASE}/reservations/all`),
+                    fetch(`${API_BASE}/rooms/available`)
+                ]);
+                
+                const reservations = await resReservations.json();
+                const rooms = await resRooms.json();
+                
                 roomSelect.innerHTML = '<option value="">-- Select Room --</option>'; 
 
-                for (let roomNum = 1001; roomNum <= 1030; roomNum++) {
+                // Loop through the actual rooms fetched from the database
+                rooms.forEach(room => {
+                    const roomNum = room.roomNumber;
+                    
+                    // Check if this specific room is occupied during the selected dates
                     const isOccupied = reservations.some(b => {
                         return b.room && b.room.roomNumber == roomNum &&
                                (checkIn < b.checkOutDate && checkOut > b.checkInDate);
                     });
 
+                    // If not occupied, add it to the dropdown with its REAL price and type
                     if (!isOccupied) {
-                        roomSelect.insertAdjacentHTML('beforeend', `<option value="${roomNum}">Room ${roomNum} ($150)</option>`);
+                        const roomType = room.roomType || 'Standard';
+                        const price = room.dailyRate || 150;
+                        
+                        roomSelect.insertAdjacentHTML('beforeend', 
+                            `<option value="${roomNum}">Room ${roomNum} - ${roomType} ($${price})</option>`
+                        );
                     }
-                }
+                });
             } catch (e) { 
                 roomSelect.innerHTML = '<option value="">Error loading rooms</option>'; 
+                console.error(e);
             }
         }
         
