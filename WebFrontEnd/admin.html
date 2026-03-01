@@ -57,8 +57,7 @@
             </div>
             <div class="form-group">
                 <label>Contact Number</label>
-                <input type="text" id="gContact" placeholder="e.g. 555-0199">
-            </div>
+                <input type="number" id="gContact" placeholder="e.g. 0712345678" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);">            </div>
         </div>
         <div class="form-group">
             <label>Home Address</label>
